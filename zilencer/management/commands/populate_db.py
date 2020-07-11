@@ -59,6 +59,7 @@ from zerver.models import (
     get_user,
     get_user_by_delivery_email,
     get_user_profile_by_id,
+    Reaction,
 )
 
 settings.TORNADO_SERVER = None
@@ -686,6 +687,7 @@ def generate_and_send_messages(data: Tuple[int, Sequence[Sequence[int]], Mapping
     random_max = 1000000
     recipients: Dict[int, Tuple[int, int, Dict[str, Any]]] = {}
     messages = []
+    messages_add_reaction = []
     while num_messages < tot_messages:
         saved_data: Dict[str, Any] = {}
         message = Message()
@@ -734,6 +736,7 @@ def generate_and_send_messages(data: Tuple[int, Sequence[Sequence[int]], Mapping
 
         message.date_sent = choose_date_sent(num_messages, tot_messages, options['threads'])
         messages.append(message)
+        messages_add_reaction.append(message)
 
         recipients[num_messages] = (message_type, message.recipient.id, saved_data)
         num_messages += 1
@@ -746,6 +749,16 @@ def generate_and_send_messages(data: Tuple[int, Sequence[Sequence[int]], Mapping
     if len(messages) > 0:
         # If there are unsent messages after exiting the loop, send them:
         send_messages(messages)
+
+        reactions_message = []
+        add_emojis=["1f44d","1f642","1f60a"]
+        for rmessage in messages_add_reaction:
+            if random.random() > 0.9:
+                reactedmessage = Reaction(user_profile=rmessage.sender, message=rmessage,
+                             emoji_name="+1", emoji_code=add_emojis[random.randint(0,2)],
+                             reaction_type="unicode_emoji")
+                reactions_message.append(reactedmessage)
+        Reaction.objects.bulk_create(reactions_message)
 
     return tot_messages
 
