@@ -756,7 +756,7 @@ def generate_and_send_messages(data: Tuple[int, Sequence[Sequence[int]], Mapping
             if random.random() > 0.9:
                 reactedmessage = Reaction(user_profile=rmessage.sender,
                                           message=rmessage,
-                                          emoji_name="+1", 
+                                          emoji_name="+1",
                                           emoji_code=add_emojis[random.randint(0, 2)],
                                           reaction_type="unicode_emoji")
                 reactions_message.append(reactedmessage)
