@@ -751,12 +751,12 @@ def generate_and_send_messages(data: Tuple[int, Sequence[Sequence[int]], Mapping
         send_messages(messages)
 
         reactions_message = []
-        add_emojis=["1f44d","1f642","1f60a"]
+        add_emojis = ["1f44d" , "1f642" , "1f60a"]
         for rmessage in messages_add_reaction:
             if random.random() > 0.9:
                 reactedmessage = Reaction(user_profile=rmessage.sender, message=rmessage,
-                             emoji_name="+1", emoji_code=add_emojis[random.randint(0,2)],
-                             reaction_type="unicode_emoji")
+                emoji_name="+1", emoji_code=add_emojis[random.randint(0 , 2)],
+                reaction_type="unicode_emoji")
                 reactions_message.append(reactedmessage)
         Reaction.objects.bulk_create(reactions_message)
 
