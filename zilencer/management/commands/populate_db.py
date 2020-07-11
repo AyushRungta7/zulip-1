@@ -42,6 +42,7 @@ from zerver.models import (
     DefaultStream,
     Huddle,
     Message,
+    Reaction,
     Realm,
     RealmAuditLog,
     RealmDomain,
@@ -59,7 +60,6 @@ from zerver.models import (
     get_user,
     get_user_by_delivery_email,
     get_user_profile_by_id,
-    Reaction,
 )
 
 settings.TORNADO_SERVER = None
